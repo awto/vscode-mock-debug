@@ -168,7 +168,22 @@ export class MockDebugSession extends LoggingDebugSession {
 		// start the program in the runtime
 		this._runtime.start(args.program, !!args.stopOnEntry);
 
+		// await timeout(1000);
+		this.sendEvent(new ProgressStartEvent("before-response", "before-1"));
+		await timeout(2000);
+		this.sendEvent(new ProgressUpdateEvent("before-response", "before-2"));
+		await timeout(2000);
+		this.sendEvent(new ProgressEndEvent("before-response", "before-3"));
+		await timeout(2000);
+
 		this.sendResponse(response);
+
+		this.sendEvent(new ProgressStartEvent("after-response", "after-1"));
+		await timeout(2000);
+		this.sendEvent(new ProgressUpdateEvent("after-response", "after-2"));
+		await timeout(2000);
+		this.sendEvent(new ProgressEndEvent("after-response", "after-3"));
+		await timeout(2000);
 	}
 
 	protected setBreakPointsRequest(response: DebugProtocol.SetBreakpointsResponse, args: DebugProtocol.SetBreakpointsArguments): void {
